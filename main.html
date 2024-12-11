@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Kiosk</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f8f8f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: auto;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #ffffff;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .menu-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f0f0f0;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .search-bar {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 16px;
+            padding-left: 40px;
+            background: #f9f9f9;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar img {
+            position: absolute;
+            left: 15px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .profile-role {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* Main Content */
+        .content {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .left-content {
+            flex: 2;
+        }
+
+        .right-content {
+            flex: 1;
+            padding: 20px;
+            border-left: 1px solid #ddd;
+        }
+        .category-list-wrapper {
+    overflow-x: auto;
+    white-space: nowrap; 
+    width: 100%; 
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+        .category-list {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        .category-item {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.3s;
+            color: #333;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-item.active {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+     
+
+        .tool-item {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .tool-id {
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .tool-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .tool-description {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .tool-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .tool-actions button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background: #ddd;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .tool-actions button:hover {
+            background: #bbb;
+        }
+
+        .form-section label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        #operator-info {
+    font-size: 16px; 
+    color: #333; /
+    font-weight: bold; 
+}
+
+#operator-info p {
+    margin: 8px 0; 
+}
+
+/* Updated tool list container layout */
+.tool-table-item {
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 1fr; /* Tool No, Branch, Status, Button */
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+}
+
+.tool-table-item:hover {
+    background-color: #f9f9f9;
+}
+
+/* Styling for individual columns */
+.tool-table-item div {
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+}
+
+.tool-table-item .action {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Button in each tool item */
+.add-btn {
+    padding: 8px 12px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+.add-btn:hover {
+    background: #0056b3;
+}
+
+#operator-info {
+    font-size: 14px;
+    color: #555;
+}
+
+#operator-info p {
+    margin: 5px 0;
+}
+
+.tool-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: #f0f0f0;
+    border-bottom: 2px solid #ddd;
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+}
+
+.tool-column {
+    flex: 1;
+    text-align: center;
+}
+.cart-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cart-tool-details {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.cart-tool-dropdowns {
+    margin-top: 10px;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    font-size: 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dua kolom */
+    gap: 15px; /* Jarak antar kolom */
+}
+
+.cart-tool-dropdowns label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.cart-tool-dropdowns select,
+.cart-tool-dropdowns input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.cart-remarks {
+    grid-column: 1 / -1; /* Ambil seluruh baris */
+    margin-top: 10px;
+}
+.cart-tool-dropdowns div {
+    margin-bottom: 5px; /* Spasi antar dropdown */
+}
+
+.cart-item span {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.cart-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cart-btn {
+    padding: 5px 10px;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+    color: #333;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.cart-btn:hover {
+    background: #f0f0f0;
+    color: #007bff;
+}
+
+.cart-qty {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    width: 30px; /* Fixed width to keep alignment */
+}
+
+
+h3 {
+    margin-bottom: 20px;
+}
+
+.summary-btn {
+    margin-top: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #007bff;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+.summary-btn:hover {
+    background: #0056b3;
+}
+
+/* Pastikan tombol di posisi paling bawah */
+.right-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+#popup-receipt {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 450px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    max-height: 80vh; /* Maksimal tinggi */
+    overflow-y: auto; /* Scroll jika konten terlalu panjang */
+}
+#popup-receipt::-webkit-scrollbar {
+    width: 8px;
+}
+
+#popup-receipt::-webkit-scrollbar-thumb {
+    background: #007bff;
+    border-radius: 5px;
+}
+
+#popup-receipt::-webkit-scrollbar-thumb:hover {
+    background: #0056b3;
+}
+
+
+#popup-receipt img {
+    display: block;
+    margin: 0 auto 20px;
+}
+
+#popup-receipt h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#popup-receipt p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+#popup-receipt .cart-item {
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#popup-receipt .cart-item h4 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+#popup-receipt .cart-item p {
+    font-size: 14px;
+    margin: 5px 0;
+    color: #555;
+}
+
+#popup-receipt table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+#popup-receipt th {
+    text-align: left;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+}
+
+#popup-receipt td {
+    padding: 8px;
+    font-size: 14px;
+    color: #555;
+    border-bottom: 1px solid #eee;
+}
+
+#popup-receipt .print-btn {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+}
+
+#popup-receipt .close-btn {
+    background: #ccc;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+}
+
+#popup-receipt .print-btn:hover {
+    background: #0056b3;
+}
+
+#popup-receipt .close-btn:hover {
+    background: #aaa;
+}
+
+
+
+        .form-section select,
+        .form-section input {
+            width: 100%;
+            margin-top: 5px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .print-btn {
+            margin-top: 15px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #ddd;
+            color: #333;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+        }
+
+        .print-btn:hover {
+            background: #bbb;
+        }
+        .print-btn {
+    margin-right: 10px; /* Spacing between buttons */
+}
+
+.close-btn {
+    margin-top: 10px; /* Spacing between button and other content */
+}
+
+button {
+    margin-top: 15px; /* Adds uniform top margin for all buttons */
+}
+
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    #popup-receipt {
+        width: 80%; /* Lebar lebih kecil dari kertas */
+        margin: 0 auto; /* Agar tetap di tengah */
+    }
+    /* Hapus scroll dan pastikan semua konten keliatan */
+    #popup-receipt div {
+        overflow: visible !important;
+        height: auto !important;
+    }
+      #popup-receipt .list-container {
+        max-height: none; /* Hilangkan batas tinggi */
+        overflow: visible; /* Pastikan semua elemen terlihat */
+    }
+}
+
+        /* Footer */
+        .footer {
+            padding: 10px;
+            text-align: center;
+            background: #f0f0f0;
+            border-top: 1px solid #ddd;
+            font-size: 14px;
+            margin-top: auto;
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <!-- <div class="menu-icon">☰</div> -->
+     <img src="https://resonactool.tetradigital.co.id/assets/images/logo.png" alt="Tool Resonac Logo" style="height: 40px;">
+        </div>
+        <div class="search-bar">
+          <i class="fas fa-search" style="position: absolute; left: 15px; font-size: 16px; color: #aaa;"></i>
+
+            <input type="text" id="search-input"placeholder="Search tools...">
+        </div>
+        <div class="header-right">
+            <div class="profile">
+   <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+
+                <div class="profile-details">
+                    <span class="profile-name">John Doe</span>
+                    <span class="profile-role">Operator</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="content">
+            <div class="left-content">
+              <div class="category-list-wrapper">
+    <div class="category-list" id="category-list">
+        <div class="category-item active">Category 1</div>
+        <div class="category-item">Category 2</div>
+        <div class="category-item">Category 3</div>
+        <div class="category-item">Category 4</div>
+        <div class="category-item">Category 5</div>
+        <div class="category-item">Category 6</div>
+        <div class="category-item">Category 7</div>
+        <div class="category-item">Category 8</div>
+    </div>
+</div>
+
+               <div class="tool-header">
+    <span class="tool-column">Tool No</span>
+    <span class="tool-column">Part Name</span>
+    <span class="tool-column">Status</span>
+    <span class="tool-column">Actions</span>
+</div>
+<div class="tool-list" id="tool-list"></div>            </div>
+            <div class="right-content">
+                <div class="cart">
+                    <h3 style="margin-bottom: 15px;">Your Cart</h3>
+                    <div id="cart-content" style="max-height: calc(72vh - 172px);overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
+                        <p>Cart is empty.</p>
+                    </div>
+                    <div class="form-section">
+                <!--         <label for="box-number">Box Number:</label>
+                        <select id="box-number">
+                            <option>IT-0057</option>
+                            <option>IT-0074</option>
+                            <option>IT-0075</option>
+                        </select>
+                        <label for="dieset-number">Dieset No:</label>
+                        <select id="dieset-number">
+                            <option>VG-01</option>
+                            <option>VG-02</option>
+                            <option>P4-70-01</option>
+                        </select>
+                        <label for="machine-info">Machine:</label>
+                        <select id="machine-info">
+                            <option>P2</option>
+                            <option>P9</option>
+                            <option>ROLLING 01</option>
+                        </select>
+                        <label for="reason-status">Reason Status:</label>
+<select id="reason-status">
+    <option>New</option>
+    <option>Problem</option>
+    <option>After Repair</option>
+</select>
+
+                        <label for="remarks">Remarks:</label>
+                        <input type="text" id="remarks" placeholder="Add notes...">
+                    </div> -->
+            <div id="operator-info" style="margin-top: 15px; padding: 10px; background: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+                <p><strong>Name:</strong> John Doe</p>
+                <p><strong>Title:</strong> Operator</p>
+                <p><strong>Time:</strong> <span id="cart-time"></span></p>
+                <p><strong>Total Items:</strong> <span id="total-items">0</span></p>
+            </div>
+                <button class="summary-btn" onclick="showConfirmationPopup()">Konfirmasi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  <div id="popup-receipt" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); z-index: 1000; max-height: 80vh; overflow-y: auto;">
+    <img src="https://resonactool.tetradigital.co.id/assets/images/logo.png" alt="Logo" style="width: 100px; display: block; margin: 0 auto 20px;">
+    <h3 style="text-align: center; margin-bottom: 10px;">Struk Pengambilan Spare</h3>
+    <p style="text-align: center; margin-bottom: 20px; font-size: 14px; color: #555;">Your order has been processed successfully.</p>
+
+    <div style="margin-bottom: 15px; line-height: 1.8;">
+        <strong style="display: inline-block; width: 120px;">Box Number:</strong> IT-0057<br>
+        <strong style="display: inline-block; width: 120px;">Reason Status:</strong> New<br>
+        <strong style="display: inline-block; width: 120px;">Remarks:</strong> Saya laper<br>
+        <strong style="display: inline-block; width: 120px;">Time:</strong> 12/9/2024, 3:51:25 PM
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <thead>
+            <tr>
+                <th style="text-align: left; padding: 8px; border-bottom: 2px solid #ddd; font-size: 14px; color: #333;">Tool Name</th>
+                <th style="text-align: right; padding: 8px; border-bottom: 2px solid #ddd; font-size: 14px; color: #333;">Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 8px; border-bottom: 1px solid #eee; font-size: 14px;">Tool A1</td>
+                <td style="padding: 8px; text-align: right; border-bottom: 1px solid #eee; font-size: 14px;">1</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border-bottom: 1px solid #eee; font-size: 14px;">Tool A2</td>
+                <td style="padding: 8px; text-align: right; border-bottom: 1px solid #eee; font-size: 14px;">1</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button class="print-btn" onclick="printReceipt()" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">Cetak</button>
+        <button class="close-btn" onclick="closePopup()" style="padding: 10px 20px; background: #ccc; color: black; border: none; border-radius: 5px; font-size: 16px; margin-left: 10px; cursor: pointer;">Tutup</button>
+    </div>
+</div>
+
+    <footer class="footer">
+        &copy; 2024 Tetra Digital. All rights reserved.
+    </footer>
+    <script>
+        const categories = ['IT-001', 'IT-002', 'IT-003'];
+const tools = {
+    'IT-001': [
+        { id: 'IT-001-001', name: 'Tool A1', branch: '240521-1', status: 'New' },
+        { id: 'IT-001-002', name: 'Tool A2', branch: '240521-2', status: 'Second' },
+    ],
+    'IT-002': [
+        { id: 'IT-002-001', name: 'Tool B1', branch: '240521-3', status: 'After Repair' },
+        { id: 'IT-002-002', name: 'Tool B2', branch: '240521-4', status: 'New' },
+    ],
+    'IT-003': [
+        { id: 'IT-003-001', name: 'Tool C1', branch: '240521-5', status: 'New' },
+        { id: 'IT-003-002', name: 'Tool C2', branch: '240521-6', status: 'Second' },
+    ],
+};
+
+
+        const cart = {};
+
+        function renderCategories() {
+            const categoryList = document.getElementById('category-list');
+            categoryList.innerHTML = '';
+            categories.forEach((category, index) => {
+                const div = document.createElement('div');
+                div.className = `category-item ${index === 0 ? 'active' : ''}`;
+                div.textContent = category;
+                div.onclick = () => setCategory(category, div);
+                categoryList.appendChild(div);
+            });
+            renderTools(categories[0]);
+        }
+
+    function setCategory(category, element) {
+    document.querySelectorAll('.category-item').forEach(item => item.classList.remove('active'));
+    element.classList.add('active');
+    renderTools(category, document.getElementById('search-input').value); // Term pencarian tetap
+}
+
+
+function renderTools(category, searchTerm = '') {
+    const toolList = document.getElementById("tool-list");
+    toolList.innerHTML = '';
+
+    // Filter tools berdasarkan kategori dan term pencarian
+    const filteredTools = tools[category].filter(tool => 
+        tool.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        tool.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (filteredTools.length > 0) {
+        filteredTools.forEach(tool => {
+            const div = document.createElement('div');
+            div.className = 'tool-table-item';
+            div.innerHTML = `
+                <div class="tool-no">${tool.id}</div>
+                <div class="branch-no">${tool.branch || "Unknown"}</div>
+                <div class="status">${tool.status || "Unknown"}</div>
+                <div class="action">
+                    <button class="add-btn" onclick="addToCart('${tool.id}', '${tool.name}')">Add</button>
+                </div>
+            `;
+            toolList.appendChild(div);
+        });
+    } else {
+        toolList.innerHTML = '<p>No tools match your search.</p>';
+    }
+}
+
+// Event listener untuk input pencarian
+document.getElementById('search-input').addEventListener('input', function() {
+    const searchTerm = this.value; // Ambil nilai input
+    const activeCategory = document.querySelector('.category-item.active').textContent.trim(); // Ambil kategori aktif
+    renderTools(activeCategory, searchTerm); // Render ulang tools dengan filter pencarian
+});
+
+function showSummary() {
+    const boxNumber = document.getElementById('box-number').value;
+    const reasonStatus = document.getElementById('reason-status').value;
+    const remarks = document.getElementById('remarks').value;
+    const time = document.getElementById('cart-time').textContent;
+
+    alert(`
+        Summary:
+        - Box Number: ${boxNumber}
+        - Reason Status: ${reasonStatus}
+        - Remarks: ${remarks}
+        - Time: ${time}
+    `);
+}
+
+
+
+function addToCart(toolId, toolName) {
+    if (!cart[toolId]) {
+        cart[toolId] = { name: toolName, qty: 1, time: new Date().toLocaleString() };
+    } else {
+        cart[toolId].qty++;
+    }
+    updateCart();
+    updateTotalItemsAndTime();
+}
+
+function updateTotalItemsAndTime() {
+    const totalItems = Object.keys(cart).reduce((sum, id) => sum + cart[id].qty, 0);
+    const time = new Date().toLocaleString();
+    document.getElementById("cart-time").textContent = time;
+    document.getElementById("total-items").textContent = totalItems;
+}
+
+function toggleSelectAll(checkbox) {
+    const allCheckboxes = document.querySelectorAll('.cart-checkbox');
+    allCheckboxes.forEach(cb => cb.checked = checkbox.checked);
+    updateSelectedCount();
+}
+
+function updateSelectedCount() {
+    const selectedCount = document.querySelectorAll('.cart-checkbox:checked').length;
+    const totalItems = document.querySelectorAll('.cart-checkbox').length;
+    document.getElementById('selected-count').textContent = `(${selectedCount} of ${totalItems} items selected)`;
+}
+
+
+function updateCart() {
+    const cartContent = document.getElementById("cart-content");
+    cartContent.innerHTML = `
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <input type="checkbox" id="select-all" onclick="toggleSelectAll(this)">
+            <label for="select-all" style="margin-left: 5px;">Select All</label>
+            <span id="selected-count" style="margin-left: 10px; font-size: 14px; color: #555;">(0 items selected)</span>
+        </div>
+    `;
+    for (const id in cart) {
+        const item = cart[id];
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <input type="checkbox" id="checkbox-${id}" class="cart-checkbox" value="${id}" checked onchange="updateSelectedCount()">
+                <div class="cart-tool-details">
+                    <span>${item.name} (${item.qty} pcs)</span>
+                </div>
+                <div class="cart-actions">
+                    <button class="cart-btn" onclick="decrementQty('${id}')">-</button>
+                    <span class="cart-qty">${item.qty}</span>
+                    <button class="cart-btn" onclick="incrementQty('${id}')">+</button>
+                </div>
+            </div>
+            <div class="cart-tool-dropdowns">
+                <div style="margin-top: 5px;">
+                    <label for="box-number-${id}">Box Number:</label>
+                    <select id="box-number-${id}">
+                        <option>IT-0057</option>
+                        <option>IT-0074</option>
+                        <option>IT-0075</option>
+                    </select>
+                </div>
+                <div style="margin-top: 5px;">
+                    <label for="dieset-number-${id}">Dieset No:</label>
+                    <select id="dieset-number-${id}">
+                        <option>VG-01</option>
+                        <option>VG-02</option>
+                        <option>P4-70-01</option>
+                    </select>
+                </div>
+                <div style="margin-top: 5px;">
+                    <label for="machine-info-${id}">Machine:</label>
+                    <select id="machine-info-${id}">
+                        <option>P2</option>
+                        <option>P9</option>
+                        <option>ROLLING 01</option>
+                    </select>
+                </div>
+                <div style="margin-top: 5px;">
+                    <label for="change-item-${id}">Change Item:</label>
+                    <select id="change-item-${id}">
+                        <option>IT-0052-3220</option>
+                        <option>IT-0052-3221</option>
+                        <option>IT-0052-3222</option>
+                    </select>
+                </div>
+                <div style="margin-top: 5px;">
+                    <label for="reason-status-${id}">Reason Status:</label>
+                    <select id="reason-status-${id}">
+                        <option>New</option>
+                        <option>Problem</option>
+                        <option>After Repair</option>
+                    </select>
+                </div>
+                <div class="cart-remarks" style="margin-top: 5px;">
+                    <label for="remarks-${id}">Remarks:</label>
+                    <input type="text" id="remarks-${id}" placeholder="Add notes...">
+                </div>
+            </div>
+        `;
+        cartContent.appendChild(div);
+    }
+    updateSelectedCount();
+}
+
+function showConfirmationPopup() {
+    const selectedItems = Object.keys(cart).filter(id => document.getElementById(`checkbox-${id}`).checked);
+    if (selectedItems.length === 0) {
+        alert("Pilih setidaknya satu item untuk dicetak.");
+        return;
+    }
+
+    const popup = document.getElementById('popup-receipt');
+    popup.innerHTML = `
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="https://resonactool.tetradigital.co.id/assets/images/logo.png" alt="Logo" style="width: 80px; margin-bottom: 10px;">
+            <h3>Konfirmasi Pengambilan Spare</h3>
+            <p style="font-size: 14px; color: #555;">Berikut detail item yang akan dicetak.</p>
+        </div>
+    
+        <div style="max-height: 300px; overflow-y: auto;">
+            ${selectedItems.map(id => `
+                <div style="margin-bottom: 15px; padding: 15px; border-radius: 5px; background: white; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
+                    <h4 style="margin-bottom: 10px; font-size: 16px; color: #333;">Tool: ${cart[id].name}</h4>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <p style="margin: 0; font-size: 14px;"><strong>Tool Number:</strong> ${id}</p>
+                        <p style="margin: 0; font-size: 14px;"><strong>Quantity:</strong> ${cart[id].qty}</p>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <p style="margin: 0; font-size: 14px;"><strong>Box Number:</strong> ${document.getElementById(`box-number-${id}`).value}</p>
+                        <p style="margin: 0; font-size: 14px;"><strong>Change Item:</strong> ${document.getElementById(`change-item-${id}`).value}</p>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <p style="margin: 0; font-size: 14px;"><strong>Reason Status:</strong> ${document.getElementById(`reason-status-${id}`).value}</p>
+                        <p style="margin: 0; font-size: 14px;"><strong>Remarks:</strong> ${document.getElementById(`remarks-${id}`).value || '-'}</p>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+
+        <div style="margin-bottom: 20px; padding: 10px; border-radius: 5px; background: #f9f9f9; box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                <div><strong>Name:</strong> John Doe</div>
+                <div><strong>Title:</strong> Operator</div>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <div><strong>Time:</strong> ${new Date().toLocaleString()}</div>
+                <div><strong>Total Pcs:</strong> ${selectedItems.reduce((sum, id) => sum + cart[id].qty, 0)}</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="print-btn" onclick="printReceipt()">Cetak</button>
+            <button class="close-btn" onclick="closePopup()">Tutup</button>
+        </div>
+    `;
+    popup.style.display = 'block';
+}
+
+
+function printReceipt() {
+    const popupContent = document.getElementById('popup-receipt').innerHTML;
+    const printWindow = window.open('', '', 'width=800,height=600');
+    printWindow.document.write('<html><head><title>Receipt</title></head><body>');
+    printWindow.document.write(popupContent);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}
+
+
+function showDetails(id) {
+    const details = document.getElementById(`details-${id}`);
+    if (details) {
+        details.classList.add('show'); // Tambahkan animasi untuk kemunculan
+        details.style.display = 'block';
+    }
+}
+
+
+
+function decrementQty(toolId) {
+    if (cart[toolId].qty > 1) {
+        cart[toolId].qty--;
+    } else {
+        delete cart[toolId];
+    }
+    updateCart();
+}
+
+function incrementQty(toolId) {
+    cart[toolId].qty++;
+    updateCart();
+}
+
+
+        function removeFromCart(toolId) {
+            if (cart[toolId].qty > 1) {
+                cart[toolId].qty--;
+            } else {
+                delete cart[toolId];
+            }
+            updateCart();
+        }
+
+        function printDetails() {
+            const boxNumber = document.getElementById('box-number').value;
+            const diesetNumber = document.getElementById('dieset-number').value;
+            const machineInfo = document.getElementById('machine-info').value;
+            const remarks = document.getElementById('remarks').value;
+
+            console.log("Box Number:", boxNumber);
+            console.log("Dieset No:", diesetNumber);
+            console.log("Machine:", machineInfo);
+            console.log("Remarks:", remarks);
+        }
+
+        renderCategories();
+function showPopup() {
+    const popup = document.getElementById('popup-receipt');
+    const popupContent = document.getElementById('popup-content');
+
+    const receiptHTML = generateReceipt();
+    if (!receiptHTML) return; // Jangan tampilkan pop-up jika tidak ada item terpilih
+
+    popup.style.display = 'block'; // Tampilkan pop-up
+    popupContent.innerHTML = receiptHTML;
+
+    // Tambahkan scroll di pop-up
+    popup.style.overflowY = 'auto';
+    popup.style.maxHeight = '80vh';
+}
+
+function closePopup() {
+    const popup = document.getElementById('popup-receipt');
+    popup.style.display = 'none'; // Sembunyikan pop-up
+}
+
+// untuk generate receipt
+function generateReceipt() {
+    const checkedItems = Array.from(document.querySelectorAll('.cart-checkbox:checked')).map(checkbox => checkbox.value);
+    if (checkedItems.length === 0) {
+        alert("Pilih setidaknya satu item untuk mencetak!");
+        return '';
+    }
+
+    let receiptHTML = '';
+    checkedItems.forEach(id => {
+        const item = cart[id];
+        receiptHTML += `
+            <div style="margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                <h4>${item.name} (${item.qty} pcs)</h4>
+                <p><strong>Box Number:</strong> ${document.getElementById(`box-number-${id}`).value}</p>
+                <p><strong>Dieset No:</strong> ${document.getElementById(`dieset-number-${id}`).value}</p>
+                <p><strong>Machine:</strong> ${document.getElementById(`machine-info-${id}`).value}</p>
+                <p><strong>Reason Status:</strong> ${document.getElementById(`reason-status-${id}`).value}</p>
+                <p><strong>Remarks:</strong> ${document.getElementById(`remarks-${id}`).value}</p>
+            </div>
+        `;
+    });
+    // Tambahkan total jumlah item di akhir receipt
+    receiptHTML += `
+        <div style="margin-top: 20px; text-align: center; font-weight: bold;">
+            Total Items to Print: ${checkedItems.length}
+        </div>
+    `;
+    return receiptHTML;
+}
+
+function printReceipt() {
+    const printWindow = window.open('', '', 'width=800,height=600');
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Struk Pengambilan Spare</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    #popup-receipt {
+                        width: 80%;
+                        margin: 0 auto;
+                        padding: 20px;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+                    }
+                    h3 {
+                        text-align: center;
+                        margin-bottom: 20px;
+                    }
+                    .list-container {
+                        overflow: visible !important;
+                        max-height: none;
+                    }
+                    .item {
+                        margin-bottom: 15px;
+                        padding: 15px;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        background: #fff;
+                    }
+                    .item div {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                </style>
+            </head>
+            <body>
+                ${document.getElementById('popup-receipt').innerHTML}
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+}
+
+
+
+    </script>
+
+</body>
+</html>

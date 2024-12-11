@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #f7f7f7, #d6d6d6);
+
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+            color: white;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9); /* White with transparency */
+            backdrop-filter: blur(10px); /* Blur effect */
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 10; /* Ensure form stays above bubbles */
+            color: #333;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 120px;
+        }
+
+        .title {
+            font-size: 20px;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+            transition: border 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border: 1px solid #007bff;
+            background: #fff;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #28a745;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background: #218838;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #ccc;
+        }
+
+        /* Bubble Animation */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 8s infinite ease-in-out;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .bubble:nth-child(1) {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 99, 132, 0.6); /* Pink bubble */
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .bubble:nth-child(2) {
+            width: 70px;
+            height: 70px;
+            background: rgba(54, 162, 235, 0.6); /* Blue bubble */
+            top: 50%;
+            left: 80%;
+            animation-delay: 2s;
+        }
+
+        .bubble:nth-child(3) {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 206, 86, 0.6); /* Yellow bubble */
+            top: 70%;
+            left: 30%;
+            animation-delay: 4s;
+        }
+
+        .bubble:nth-child(4) {
+            width: 60px;
+            height: 60px;
+            background: rgba(75, 192, 192, 0.6); /* Aqua bubble */
+            top: 40%;
+            left: 60%;
+            animation-delay: 6s;
+        }
+
+        .bubble:nth-child(5) {
+            width: 90px;
+            height: 90px;
+            background: rgba(153, 102, 255, 0.6); /* Purple bubble */
+            top: 10%;
+            left: 50%;
+            animation-delay: 8s;
+        }
+        .footer{
+          color: black;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-30px) scale(1.1);
+            }
+            100% {
+                transform: translateY(0) scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Bubbles -->
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+
+    <!-- Login Form -->
+    <div class="container">
+        <div class="logo">
+            <img src="https://resonactool.tetradigital.co.id/assets/images/logo.png" alt="Tool Resonac Logo">
+        </div>
+        <div class="title">Masuk untuk mengambil Spare</div>
+        <div class="subtitle">Silakan masukkan PIN Anda untuk melanjutkan</div>
+        <div class="input-group">
+            <label for="pin">Masukkan PIN</label>
+            <input type="password" id="pin" placeholder="••••" maxlength="6">
+        </div>
+        <button class="btn-login" onclick="validatePin()">Masuk</button>
+    </div>
+    <div class="footer">
+        &copy; 2024 Resonac Tool System.
+    </div>
+
+    <script>
+        function validatePin() {
+            const pin = document.getElementById("pin").value;
+            const correctPin = "123456"; // Set your correct PIN here
+
+            if (pin === correctPin) {
+                window.location.href = "main.html"; // Redirect to main page
+            } else {
+                alert("PIN salah! Silakan coba lagi.");
+            }
+        }
+    </script>
+</body>
+</html>
